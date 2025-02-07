@@ -1,0 +1,26 @@
+[ Host ]
+Interfaces = eth0, wlan0
+Core_Affinity = 1, 0
+
+[ eth0 ]
+eth0.IP = 10.15.2.1
+eth0.Broadcast = 10.15.2.255
+eth0.Netmask = 255.255.255.0
+# eth0.Routes = []
+
+[ wlan0 ]
+wlan0.IP = 10.15.1.2
+wlan0.Broadcast = 10.15.2.255
+wlan0.Netmask = 255.255.255.0
+# wlan0.Routes = []
+
+[ Tests ]
+Reporting_Interval = 1000
+Length.Individual = 20
+Length.Number_Of_Tests = 100
+Length.Delay.End = 20
+Variation = 5
+$Path = [ E2W, W2E ]
+Protocol = [ TCP, UDP ]
+Direction = [ UNIDIR, BIDIR ]
+Commands = [ ./eBPFInsight, perf stat -o ${Path}_${Protocol}_${}_${test_num}.txt -e cpu-cycles,cache-misses -C ${Core_Affinity} -I ${Reporting_Interval} sleep ${Length.Individual}]
